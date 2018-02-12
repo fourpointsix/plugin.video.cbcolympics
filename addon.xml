@@ -14,6 +14,8 @@
     <description lang="en">2018 Winter Olympic streams from the CBC. Streams are geo-blocked so you must be on a Canadian IP for this to work.</description>
     <platform>all</platform>
     <language>en</language>
+    <news>v1.0.0 (2018-02-11)
+- Initial version for 2018 Winter Olympics</news>
   </extension>
   <assets>
     <icon>icon.png</icon>
