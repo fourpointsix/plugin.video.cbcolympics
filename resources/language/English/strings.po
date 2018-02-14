@@ -188,6 +188,14 @@ msgctxt "#30300"
 msgid "Root"
 msgstr ""
 
+msgctxt "#30301"
+msgid "General"
+msgstr ""
+
+msgctxt "#30302"
+msgid "Bit rate limit (kbit/s)"
+msgstr ""
+
 # Errors
 msgctxt "#30900"
 msgid "No URL or ID provided for video"

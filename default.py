@@ -320,15 +320,23 @@ def videoIsmUrlToMpegUrl(video_ism_url):
     xml_streams = re.compile('<StreamIndex (.+)>(.+?)</StreamIndex>', re.DOTALL).search(xml).group(1)
     quality_levels = re.compile('<QualityLevel Index="(.+?)" Bitrate="(.+?)"', re.DOTALL).findall(xml_streams)
 
-    # Find the highest quality level
-    highest_quality = 0
-    for quality_level in quality_levels:
-        if int(quality_level[1]) > highest_quality:
-            highest_quality = int(quality_level[1])
+    # Get the bitrate limit setting, if there is one
+    try:
+        # Load the kbps bitrate setting and convert to bps
+        bitrateLimit = int(xbmcplugin.getSetting(_handle, 'bitrateLimitKbps')) * 1000
+    except ValueError:
+        bitrateLimit = 10000000000       # 10 Gbit/sec is essentially unlimited, right?
 
-    # Default to the most popular highest quality level
-    if highest_quality == 0:
-        highest_quality = 3449984
+    # Find the highest bitrate within the setting limit
+    selected_bitrate = 0
+    for quality_level in quality_levels:
+        bitrate = int(quality_level[1])
+        if (bitrate <= bitrateLimit) and (bitrate > selected_bitrate):
+            selected_bitrate = bitrate
+
+    # Default to the most popular highest bitrate
+    if selected_bitrate == 0:
+        selected_bitrate = 3449984
 
     # Get the audio track format
     # Find all stream tags
@@ -350,7 +358,7 @@ def videoIsmUrlToMpegUrl(video_ism_url):
             if audiotrack_eng.find('eng') != -1:
                 audiotrack = audiotrack_eng
 
-    url = video_ism_url + '/QualityLevels({0})/Manifest(video,format=m3u8-aapl-v3,audiotrack={1},filter=hls)|User-Agent={2}'.format(highest_quality, audiotrack, user_agent)
+    url = video_ism_url + '/QualityLevels({0})/Manifest(video,format=m3u8-aapl-v3,audiotrack={1},filter=hls)|User-Agent={2}'.format(selected_bitrate, audiotrack, user_agent)
 
     return url
 
