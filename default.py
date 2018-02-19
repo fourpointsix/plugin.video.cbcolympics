@@ -1,6 +1,8 @@
 import sys
 from urllib import urlencode
 from urlparse import urlparse, parse_qsl
+import datetime
+import time
 import json
 import re
 import xbmcgui
@@ -25,6 +27,12 @@ def strings(id):
 CBC_HOST = 'https://olympics.cbc.ca'
 
 USERAGENT   = 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36'
+
+STATE_UPCOMING = 'upcoming'
+STATE_LIVE = 'live'
+STATE_REPLAY = 'replay'
+
+TIME_FORMAT = '%I:%M %p'
 
 httpHeaders = {'User-Agent': USERAGENT,
                 'Accept':"application/json, text/javascript, text/html,*/*",
@@ -112,7 +120,7 @@ STATIC_ENTRIES = [
                 'type': 'folder',
                 'page': 'json_videos',
                 'title': strings(30206),
-                'uri': 'https://olympics.cbc.ca/api-live/online-listing/must-see/list.json',
+                'uri': CBC_HOST + '/api-live/online-listing/must-see/list.json',
             },
             {
                 'type': 'folder',
@@ -139,6 +147,31 @@ STATIC_ENTRIES = [
                 'uri': 'whats-on-tv',
             },
         ]
+
+# This assumes the input format is fixed at yyyy-mm-ddThh:mm:ssZ
+# (eg. '2018-02-19T10:55:00Z')
+def iso8601UtcStrToLocalDateTime(text):
+    # The lack of native support for time zones in Python is surprising
+    # so we have to calculate it ourselves
+
+    # Calculate the UTC offset for this machine
+    utcOffset = datetime.datetime.now() - datetime.datetime.utcnow()
+
+    # Round the offset to the nearest second because utcnow() and now() were
+    # called serially so there's a few microseconds between them
+    utcOffset = datetime.timedelta(seconds = int(utcOffset.total_seconds()))
+
+    try:
+        # Convert the input UTC string into a UTC datetime object
+        eventTimeUtc = datetime.datetime.strptime(text, '%Y-%m-%dT%H:%M:%SZ')
+    except TypeError:
+        # This is screwy. Some calls to strptime throw "TypeError: attribute of type 'NoneType' is not callable"
+        # so this workaround is necessary. It happened to me and it could happen to you.
+        # See https://forum.kodi.tv/showthread.php?tid=112916
+        eventTimeUtc = datetime.datetime(*(time.strptime(text, '%Y-%m-%dT%H:%M:%SZ')[0:6]))        
+
+    # Return the datetime object offset by utcOffset to get local time
+    return eventTimeUtc + utcOffset
 
 # Lovingly borrowed from t1mlib
 def get_url(**kwargs):
@@ -180,6 +213,15 @@ def list_entries(folder_title, entries):
                     'plot': entry.get('description', None),
                     'mediatype': 'video'
                 })
+
+            # Set the stream duration if it was provided so it shows
+            # in the listing
+            duration = entry.get('duration')
+            if duration is not None:
+                list_item.addStreamInfo('video',
+                    {
+                        'duration': duration.total_seconds()
+                    })
 
             list_item.setArt(entry['art'])
             list_item.setProperty('IsPlayable', 'true')
@@ -240,11 +282,56 @@ def list_json_videos_bydate(folder_title, category):
 
 def list_json_append_video(entries, video):
     try:
+        if (video.get('startDate') is not None) and (video.get('endDate') is not None):
+            # For videos with start and end dates, calculate and include the event duration
+            startDate = iso8601UtcStrToLocalDateTime(video['startDate'])
+            endDate = iso8601UtcStrToLocalDateTime(video['endDate'])
+            duration = endDate - startDate
+        else:
+            duration = None
+
         if ('state' in video) and (video['state'] != ''):
-            video['description'] = u'{0}\n\n({1})'.format(video['description'], video['state'].title())
-            video['title'] = u'{0} ({1})'.format(video['title'].rstrip(), video['state'])
+            titleState = video['state']
+            descState = video['state']
+
+            if video['state'] != STATE_REPLAY:
+                # For non-replay entries, include the event start time
+                try:
+                    # Convert the UTC start date string into a local datetime object
+                    startDate = iso8601UtcStrToLocalDateTime(video['startDate'])
+
+                    # Get the event start time string, stripping off leading zeroes because
+                    # apparently Python doesn't have a format specifier for 12-hour hours
+                    # without leading zeroes
+                    startTimeStr = startDate.strftime(TIME_FORMAT).lstrip('0')
+
+                    # For events today just include the time but for
+                    # events on another day, include the date and time
+                    if datetime.datetime.now().date() == startDate.date():
+                        startDateStr = startTimeStr
+                    else:
+                        monthStr = startDate.strftime('%b')
+                        dayStr = startDate.strftime('%d').lstrip('0')       # There's that leading zero strip again
+                        startDateStr = '{0} {1} {2}'.format(startTimeStr, monthStr, dayStr)
+
+                    # Build a description of the start date
+                    if video['state'] == STATE_UPCOMING:
+                        titleState = strings(30303).format(startDateStr)
+                        descState = strings(30303).format(startDateStr)
+                    elif video['state'] == STATE_LIVE:
+                        titleState = strings(30304).format(startDateStr)
+                        descState = strings(30304).format(startDateStr)
+                except:
+                    # Something went wrong so just go with the default state string
+                    pass
+            elif video['state'] == STATE_REPLAY:
+                titleState = strings(30305)
+                descState = strings(30305)
+
+            video['title'] = u'{0} ({1})'.format(video['title'].rstrip(), titleState)
+            video['description'] = u'{0}\n\n({1})'.format(video['description'], descState)
     except:
-        raise ValueError(str(video))
+        raise # ValueError(str(video))
 
     entries.append(
         {
@@ -252,6 +339,7 @@ def list_json_append_video(entries, video):
             'title': video['title'],
             'description': video['description'],
             'videoId': video['key'],
+            'duration': duration,
             'art':
             {
 
@@ -281,7 +369,7 @@ def list_json_videos(folder_title, url):
 
 def videoIdToIsmUrl(videoId):
     # Build URL to the video's XML document
-    xml_url = 'https://olympics.cbc.ca/videodata/{0}.xml'
+    xml_url = CBC_HOST + '/videodata/{0}.xml'
 
     # Fetch the XML
     xml = getRequest(xml_url.format(videoId))

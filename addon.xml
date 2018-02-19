@@ -16,7 +16,9 @@
     <language>en</language>
     <news>v1.0.1
 - Added bitrate limit setting
-- Changed Python dependency to 2.24 for Kodi 16 compatibility</news>
+- Changed Python dependency to 2.24 for Kodi 16 compatibility
+- Added durations to video listing
+- Added start times to upcoming events</news>
   </extension>
   <assets>
     <icon>icon.png</icon>
