@@ -3,12 +3,12 @@ import sys
 try:
     # Try the Python 3 libraries first
     from urllib.parse import urlencode
-    from urllib.parse import parse_qsl, urljoin
+    from urllib.parse import parse_qsl, urljoin, quote_plus
     from urllib.request import Request, urlopen
     isPython2 = False
 except ImportError:
     # Fall-back to Python 2 libraries
-    from urllib import urlencode
+    from urllib import urlencode, quote_plus
     from urlparse import parse_qsl, urljoin
     from urllib2 import Request, urlopen
     isPython2 = True
@@ -463,7 +463,7 @@ def videoIdToM3u8Url(videoId):
 
     # Locate the first video element on the page
     ns = {'smil': 'http://www.w3.org/2005/SMIL21/Language'}
-    video = root.find('./smil:body/smil:seq/smil:video', ns)
+    video = root.find('./smil:body//smil:video', ns)
 
     # Return the "src" attribute of the video element
     return video.attrib['src']
@@ -511,7 +511,7 @@ def play_video(videoId):
 
     # Append our custom user agent because it needs to match the agent from the m3u8 request,
     # otherwise an HTTP 403 Forbidden is returned
-    stream_agent_url = '{0}|User-Agent={1}'.format(stream_url, urllib.quote_plus(USERAGENT))
+    stream_agent_url = '{0}|User-Agent={1}'.format(stream_url, quote_plus(USERAGENT))
 
     # Create a playable item with a path to play.
     play_item = xbmcgui.ListItem(path=stream_agent_url)
