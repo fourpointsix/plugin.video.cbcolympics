@@ -4,6 +4,11 @@
 msgid ""
 msgstr ""
 
+# General
+msgctxt "#31000"
+msgid "CBC Olympics"
+msgstr ""
+
 # Sport names
 msgctxt "#30000"
 msgid "All Sports"
@@ -238,4 +243,24 @@ msgstr ""
 
 msgctxt "#30901"
 msgid "Invalid paramstring: {0}"
+msgstr ""
+
+msgctxt "#30902"
+msgid "The server did not return a valid stream. Please try again later."
+msgstr ""
+
+msgctxt "#30903"
+msgid "The server has denied the request. This is typically due to geoblocking. Be sure that you're on a Canadian IP address."
+msgstr ""
+
+msgctxt "#30904"
+msgid "The stream for this upcoming event is not yet available. Please wait and try again closer to its scheduled start time."
+msgstr ""
+
+msgctxt "#30905"
+msgid "This stream was not found."
+msgstr ""
+
+msgctxt "#30906"
+msgid "HTTP error {0}: {1}"
 msgstr ""

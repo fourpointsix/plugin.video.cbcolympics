@@ -5,12 +5,13 @@ try:
     from urllib.parse import urlencode
     from urllib.parse import parse_qsl, urljoin, quote_plus
     from urllib.request import Request, urlopen
+    from urllib.error import HTTPError
     isPython2 = False
 except ImportError:
     # Fall-back to Python 2 libraries
     from urllib import urlencode, quote_plus
     from urlparse import parse_qsl, urljoin
-    from urllib2 import Request, urlopen
+    from urllib2 import Request, urlopen, HTTPError
     isPython2 = True
 
 import xml.etree.ElementTree as ET
@@ -34,6 +35,15 @@ addon = xbmcaddon.Addon()
 
 UTF8 = 'utf-8'
 
+class SmilDocumentError(Exception):
+    pass
+
+class NoVideoNodeError(SmilDocumentError):
+    pass
+
+class NoSrcAttribError(SmilDocumentError):
+    pass
+
 # Used for encoding Python 2 strings in UTF-8 while also
 # letting Python 3 just work as it normally does with
 # built-in unicode strings
@@ -53,6 +63,11 @@ def py2decodeUtf8(str):
 
 def strings(id):
     return py2utf8(addon.getLocalizedString(id))
+
+def okDialog(message):
+    xbmc.log('Showing OK dialog: ' + message)
+    dialog = xbmcgui.Dialog()
+    return dialog.ok(strings(31000), message)
 
 SMIL_URL = "https://link.theplatform.com/s/ExhSPC/media/guid/2655402169/{0}/meta.smil?feed=Player%20Selector%20-%20Prod&format=smil&mbr=true&manifest=m3u"
 
@@ -229,7 +244,7 @@ def list_entries(folder_title, entries):
             list_item.setArt(entry['art'])
             list_item.setProperty('IsPlayable', 'true')
 
-            url = get_url(action='play', title=py2utf8(entry['title']), videoId=entry.get('videoId', ''))
+            url = get_url(action='play', title=py2utf8(entry['title']), videoId=entry.get('videoId', ''), isUpcoming=entry.get('isUpcoming', False))
 
             is_folder = False
 
@@ -303,6 +318,7 @@ def entries_append_video(entries, video):
             'description': video.get('description'),
             'videoId': video.get('id'),
             'duration': video.get('duration'),
+            'isUpcoming': isUpcoming,
             'art':
             {
 
@@ -455,18 +471,29 @@ def videoIdToM3u8Url(videoId):
     smil_url = SMIL_URL.format(videoId)
     xbmc.log('smil_url = ' + smil_url)
 
-    # Fetch the SMIL
-    smil = getRequest(smil_url)
+    try:
+        # Fetch the SMIL
+        smil = getRequest(smil_url)
 
-    # Parse the SMIL document as XML
-    root = ET.fromstring(smil)
+        # Parse the SMIL document as XML
+        root = ET.fromstring(smil)
 
-    # Locate the first video element on the page
-    ns = {'smil': 'http://www.w3.org/2005/SMIL21/Language'}
-    video = root.find('./smil:body//smil:video', ns)
+        # Locate the first video element on the page
+        ns = {'smil': 'http://www.w3.org/2005/SMIL21/Language'}
+        video = root.find('./smil:body//smil:video', ns)
+        if not video:
+            raise NoVideoNodeError('SMIL document missing a video node')
 
-    # Return the "src" attribute of the video element
-    return video.attrib['src']
+        # Extract the "src" attribute of the video element
+        src = video.attrib.get('src')
+        if not src:
+            raise NoSrcAttribError('Video node missing a src attribute')
+
+        return src
+    except Exception as err:
+        xbmc.log('Error loading SMIL: ' + str(err))
+        xbmc.log(smil)
+        raise
 
 def pickStreamUrlFromM3u8Url(m3u8_url):
     try:
@@ -491,32 +518,65 @@ def pickStreamUrlFromM3u8Url(m3u8_url):
 
         selected_stream_url = urljoin(m3u8_url, selected_stream_url)
         return selected_stream_url
-    except:
+    except HTTPError:
+        # Let the HTTP errors bubble up so that the caller can handle them
+        raise
+    except Exception as err:
         # If any of the stream selection code above fails, just return the original m3u8
         # and let Kodi choose the stream. It will default to the first one which has
         # been the 2 Mbit stream. The user can switch streams in Kodi's UI during playback.
+        xbmc.log('Error picking stream from M3U8: ' + str(err))
+        xbmc.log('Falling back to playing M3U8 directly')
         return m3u8_url
 
-def play_video(videoId):
+def play_video(videoId, isUpcoming):
     if not videoId or (videoId == ''):
         raise ValueError(strings(30900))
 
-    # Fetch the video's SMIL document and extract the m3u8 from it
-    m3u8_url = videoIdToM3u8Url(videoId)
-    xbmc.log('m3u8_url: ' + m3u8_url)
+    try:
+        # Fetch the video's SMIL document and extract the m3u8 from it.
+        # This has failed in the past so re-try to see if the error persists.
+        smilAttemptsRemaining = 2
+        while (smilAttemptsRemaining > 0):
+            try:
+                m3u8_url = videoIdToM3u8Url(videoId)
 
-    # Fetch the video's m3u8 and pick the stream based on the user's bitrate preference
-    stream_url = pickStreamUrlFromM3u8Url(m3u8_url)
-    xbmc.log('stream_url: ' + stream_url)
+                # Success. No need to re-try.
+                smilAttemptsRemaining = 0
+                xbmc.log('m3u8_url: ' + m3u8_url)
+            except SmilDocumentError as err:
+                smilAttemptsRemaining -= 1
+                if (smilAttemptsRemaining == 0):
+                    # "The server did not return a valid stream. Please try again later."
+                    okDialog(strings(30902))
+                    return
+                else:
+                    xbmc.log('Re-trying SMIL fetch')
 
-    # Append our custom user agent because it needs to match the agent from the m3u8 request,
-    # otherwise an HTTP 403 Forbidden is returned
-    stream_agent_url = '{0}|User-Agent={1}'.format(stream_url, quote_plus(USERAGENT))
+        # Fetch the video's m3u8 and pick the stream based on the user's bitrate preference
+        stream_url = pickStreamUrlFromM3u8Url(m3u8_url)
+        xbmc.log('stream_url: ' + stream_url)
 
-    # Create a playable item with a path to play.
-    play_item = xbmcgui.ListItem(path=stream_agent_url)
-    # Pass the item to the Kodi player.
-    xbmcplugin.setResolvedUrl(_handle, True, listitem=play_item)
+        # Append our custom user agent because it needs to match the agent from the m3u8 request,
+        # otherwise an HTTP 403 Forbidden is returned
+        stream_agent_url = '{0}|User-Agent={1}'.format(stream_url, quote_plus(USERAGENT))
+
+        # Create a playable item with a path to play.
+        play_item = xbmcgui.ListItem(path=stream_agent_url)
+        # Pass the item to the Kodi player.
+        xbmcplugin.setResolvedUrl(_handle, True, listitem=play_item)
+    except HTTPError as err:
+        if err.code == 403:
+            errorMessage = strings(30903)
+        elif err.code == 404:
+            if isUpcoming:
+                errorMessage = strings(30904)
+            else:
+                errorMessage = strings(30905)
+        else:
+            errorMessage = strings(30906).format(err.code, err.reason)
+
+        okDialog(errorMessage)
 
 def router(paramstring):
     # Parse a URL-encoded paramstring to the dictionary of
@@ -536,7 +596,7 @@ def router(paramstring):
             else:
                 pass
         elif params['action'] == 'play':
-            play_video(params.get('videoId',''))
+            play_video(params.get('videoId',''), params.get('isUpcoming', 'False')=='True')
         else:
             # If the provided paramstring does not contain a supported action
             # we raise an exception. This helps to catch coding errors,
