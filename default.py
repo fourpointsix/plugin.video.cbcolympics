@@ -67,7 +67,7 @@ def strings(id):
 def okDialog(message):
     xbmc.log('Showing OK dialog: ' + message)
     dialog = xbmcgui.Dialog()
-    return dialog.ok(strings(31000), message)
+    return dialog.ok(strings(30999), message)
 
 SMIL_URL = "https://link.theplatform.com/s/ExhSPC/media/guid/2655402169/{0}/meta.smil?feed=Player%20Selector%20-%20Prod&format=smil&mbr=true&manifest=m3u"
 

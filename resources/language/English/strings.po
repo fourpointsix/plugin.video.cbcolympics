@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 
 # General
-msgctxt "#31000"
+msgctxt "#30999"
 msgid "CBC Olympics"
 msgstr ""
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.cbcolympics"
        name="CBC Olympics"
-       version="2.0.0~beta2"
+       version="2.0.0"
        provider-name="fourpointsix">
   <requires>
     <!-- Enable this for Kodi 16.x through 18.x -->
@@ -17,7 +17,7 @@
     <description lang="en">Tokyo 2020 Summer Olympics streams from the CBC. Streams are geo-blocked so you must be on a Canadian IP for this to work.</description>
     <platform>all</platform>
     <language>en</language>
-    <news>v2.0.0 (2021-07-24)
+    <news>v2.0.0 (2021-07-29)
 - Re-written for Tokyo 2020</news>
     <assets>
       <icon>icon.png</icon>
