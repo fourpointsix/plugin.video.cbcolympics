@@ -13,10 +13,12 @@
     <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
-    <summary lang="en">CBC Olympics</summary>
-    <description lang="en">Tokyo 2020 Summer Olympics streams from the CBC. Streams are geo-blocked so you must be on a Canadian IP for this to work.</description>
+    <summary lang="en_GB">CBC Olympics</summary>
+    <description lang="en_GB">Tokyo 2020 Summer Olympics streams from the CBC. Streams are geo-blocked so you must be on a Canadian IP for this to work.</description>
     <platform>all</platform>
-    <language>en</language>
+    <language>en_GB</language>
+    <license>GPL-3.0-only</license>
+    <source>https://github.com/fourpointsix/plugin.video.cbcolympics</source>
     <news>v2.0.0 (2021-07-29)
 - Re-written for Tokyo 2020</news>
     <assets>
