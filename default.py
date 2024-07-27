@@ -519,6 +519,7 @@ def entries_append_contentItem(entries, contentItem):
     media = contentItem.get('media')
     if media:
         isLive = (media.get('streamType') == 'Live')
+        duration = int(media.get('duration', ''))
 
     isUpcoming = (airDate > datetime.datetime.now())
 
@@ -709,6 +710,8 @@ def list_clips_by_slug(page_title, slug, pageNo):
             ]
         },
         "lineupOnly": False,
+        "minPubDate": "now-365d",
+        "maxPubDate": "now+4h",
         "page": pageNo,
         "pageSize": PAGE_SIZE
     }
