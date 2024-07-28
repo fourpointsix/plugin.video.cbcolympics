@@ -37,7 +37,10 @@ v2.3.1 (2024-07-28)
 - Added event durations
 - Limited past events to those that are within the last year to eliminate leftover Tokyo clips
 - Limited future events to those that are less than 4 hours away
-</news>
+- Fixed "next pages" always being replays
+- Removed custom bitrate selection as it caused some streams to have no audio
+- Bitrate selection now the responsibility of Kodi
+- In-player program selection and audio track selection now work on streams that support them</news>
     <assets>
       <icon>icon.png</icon>
       <fanart>fanart.jpg</fanart>

@@ -283,7 +283,6 @@ STATIC_ENTRIES = [
             'title': strings(30200),
             'type': 'folder',
             'page': 'live_videos',
-            'uri': 'live_videos',
         },
         {
             'title': strings(30201),
@@ -478,8 +477,6 @@ def list_entries(folder_title, entries):
                 action='listing',
                 page=entry['page'],
                 title=entry['title'],
-                uri=entry.get('uri'),
-                category=entry.get('category'),
                 slug=entry.get('slug'),
                 pageNo=entry.get('pageNo', 1)
             )
@@ -615,7 +612,7 @@ def graphql_allContentItems_result_to_entries(graphql_result):
 
     return graphql_contentItems_to_entries(nodes)
 
-def list_contentItems(page_title, pageNo, graphql_variables):
+def list_contentItems(page_title, graphql_variables, next_page_entry):
     graphql = """
 query contentItemsByItemsQueryFilters(
   $itemsQueryFilters: ItemsQueryFilters
@@ -665,16 +662,7 @@ query contentItemsByItemsQueryFilters(
 
     # If we have a full page of results, append a "next page" entry
     if len(entries) == PAGE_SIZE:
-        nextPageNo = pageNo + 1
-        entries.append(
-            {
-                'title': page_title,
-                'listing_title': strings(30306).format(page_title, nextPageNo),
-                'type': 'folder',
-                'page': 'live_videos',
-                'pageNo': nextPageNo,
-                'uri': 'live_videos',
-            })
+        entries.append(next_page_entry)
 
     return list_entries(page_title, entries)
 
@@ -696,7 +684,15 @@ def list_live_videos(page_title, pageNo):
         "pageSize": PAGE_SIZE
     }
 
-    return list_contentItems(page_title, pageNo, variables)
+    next_page_entry = {
+        'title': page_title,
+        'listing_title': strings(30306).format(page_title, pageNo + 1),
+        'type': 'folder',
+        'page': 'live_videos',
+        'pageNo': pageNo + 1,
+    }
+
+    return list_contentItems(page_title, variables, next_page_entry)
 
 def list_clips_by_slug(page_title, slug, pageNo):
     variables = {
@@ -716,7 +712,16 @@ def list_clips_by_slug(page_title, slug, pageNo):
         "pageSize": PAGE_SIZE
     }
 
-    return list_contentItems(page_title, pageNo, variables)
+    next_page_entry = {
+        'title': page_title,
+        'listing_title': strings(30306).format(page_title, pageNo + 1),
+        'type': 'folder',
+        'page': 'clips_by_slug',
+        'slug': slug,
+        'pageNo': pageNo + 1,
+    }
+
+    return list_contentItems(page_title, variables, next_page_entry)
 
 def list_sports(page_title):
     entries = []
@@ -879,8 +884,22 @@ def play_video(videoId, medianetUrl, isUpcoming):
                 else:
                     xbmc.log('Re-trying medianet fetch')
 
-        # Fetch the video's m3u8 and pick the stream based on the user's bitrate preference
-        stream_url = pickStreamUrlFromM3u8Url(m3u8_url)
+        # For Paris 2024, some streams (not many) are published as separate video and audio streams
+        # in the m3u8 which the player can understand and play correctly. However, this plugin was
+        # doing its own bitrate selection by parsing the m3u8 and extracting the chosen stream, so
+        # for these dual-stream manifests it was only passing the one stream, the video, to the
+        # player, causing them to be silent. To resolve this, I could've either continued to parse
+        # the m3u8, extracted both the video and audio URLs, built a new manifest with the two
+        # streams, and passed that into the player, or I could just forego the custom bitrate
+        # selection and instead pass the original m3u8 to Kodi, letting Kodi pick the most
+        # appropriate stream. I decided on the latter because the games are already underway and I
+        # felt that losing the custom bitrate selection was worth the benefit of passing all
+        # responsibility for parsing the m3u8 to Kodi.
+        # Added benefit: Kodi's in-player program selection and audio stream selection now work.
+
+        # [No longer] Fetch the video's m3u8 and pick the stream based on the user's bitrate preference
+        #stream_url = pickStreamUrlFromM3u8Url(m3u8_url)
+        stream_url = m3u8_url
         xbmc.log('stream_url: ' + stream_url)
 
         # Append our custom user agent because it needs to match the agent from the m3u8 request,
