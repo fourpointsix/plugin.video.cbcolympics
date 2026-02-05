@@ -11,159 +11,67 @@ msgstr ""
 
 # Sport names
 msgctxt "#30000"
-msgid "Archery"
+msgid  "Alpine Skiing"
 msgstr ""
 
 msgctxt "#30001"
-msgid "Artistic Swimming"
+msgid  "Biathlon"
 msgstr ""
 
 msgctxt "#30002"
-msgid "Athletics"
+msgid  "Bobsleigh"
 msgstr ""
 
 msgctxt "#30003"
-msgid "Badminton"
+msgid  "Cross-Country Skiing"
 msgstr ""
 
 msgctxt "#30004"
-msgid "Basketball"
+msgid  "Curling"
 msgstr ""
 
 msgctxt "#30005"
-msgid "3x3 Basketball"
+msgid  "Figure Skating"
 msgstr ""
 
 msgctxt "#30006"
-msgid "Beach Volleyball"
+msgid  "Freestyle Skiing"
 msgstr ""
 
 msgctxt "#30007"
-msgid "Boxing"
+msgid  "Hockey"
 msgstr ""
 
 msgctxt "#30008"
-msgid "Breaking"
+msgid  "Luge"
 msgstr ""
 
 msgctxt "#30009"
-msgid "Canoe"
+msgid  "Nordic Combined"
 msgstr ""
 
 msgctxt "#30010"
-msgid "Cycling"
+msgid  "Short Track Speed Skating"
 msgstr ""
 
 msgctxt "#30011"
-msgid "Diving"
+msgid  "Skeleton"
 msgstr ""
 
 msgctxt "#30012"
-msgid "Equestrian"
+msgid  "Ski Jumping"
 msgstr ""
 
 msgctxt "#30013"
-msgid "Fencing"
+msgid  "Ski Mountaineering"
 msgstr ""
 
 msgctxt "#30014"
-msgid "Field Hockey"
+msgid  "Snowboard"
 msgstr ""
 
 msgctxt "#30015"
-msgid "Golf"
-msgstr ""
-
-msgctxt "#30016"
-msgid "Gymnastics (Artistic)"
-msgstr ""
-
-msgctxt "#30017"
-msgid "Gymnastics (Rhythmic)"
-msgstr ""
-
-msgctxt "#30018"
-msgid "Gymnastics (Trampoline)"
-msgstr ""
-
-msgctxt "#30019"
-msgid "Handball"
-msgstr ""
-
-msgctxt "#30020"
-msgid "Judo"
-msgstr ""
-
-msgctxt "#30021"
-msgid "Modern Pentathlon"
-msgstr ""
-
-msgctxt "#30022"
-msgid "Rowing"
-msgstr ""
-
-msgctxt "#30023"
-msgid "Rugby"
-msgstr ""
-
-msgctxt "#30024"
-msgid "Sailing"
-msgstr ""
-
-msgctxt "#30025"
-msgid "Shooting"
-msgstr ""
-
-msgctxt "#30026"
-msgid "Skateboarding"
-msgstr ""
-
-msgctxt "#30027"
-msgid "Soccer"
-msgstr ""
-
-msgctxt "#30028"
-msgid "Sport Climbing"
-msgstr ""
-
-msgctxt "#30029"
-msgid "Surfing"
-msgstr ""
-
-msgctxt "#30030"
-msgid "Swimming"
-msgstr ""
-
-msgctxt "#30031"
-msgid "Table Tennis"
-msgstr ""
-
-msgctxt "#30032"
-msgid "Taekwondo"
-msgstr ""
-
-msgctxt "#30033"
-msgid "Tennis"
-msgstr ""
-
-msgctxt "#30034"
-msgid "Triathlon"
-msgstr ""
-
-msgctxt "#30035"
-msgid "Volleyball"
-msgstr ""
-
-msgctxt "#30036"
-msgid "Water Polo"
-msgstr ""
-
-msgctxt "#30037"
-msgid "Weightlifting"
-msgstr ""
-
-msgctxt "#30038"
-msgid "Wrestling"
+msgid  "Speed Skating"
 msgstr ""
 
 # Static categories

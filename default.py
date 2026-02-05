@@ -83,200 +83,85 @@ httpHeaders = {
 SPORTS = [
         {
             'title': strings(30000),
-            'url': '/sports/olympics/summer/archery',
-            'slug': 'summer-olympics-archery',
+            'url': '/sports/olympics/winter/alpine-skiing',
+            'slug': ''
         },
         {
             'title': strings(30001),
-            'url': '/sports/olympics/summer/aquatics/artistic-swimming',
-            'slug': 'summer-olympics-artistic-swimming',
+            'url': '/sports/olympics/winter/biathlon',
+            'slug': ''
         },
         {
             'title': strings(30002),
-            'url': '/sports/olympics/summer/athletics',
-            'slug': 'track-and-field',
+            'url': '/sports/olympics/winter/bobsleigh',
+            'slug': ''
         },
         {
             'title': strings(30003),
-            'url': '/sports/olympics/summer/badminton',
-            'slug': 'badminton',
+            'url': '/sports/olympics/winter/cross-country-skiing',
+            'slug': ''
         },
         {
             'title': strings(30004),
-            'url': '/sports/olympics/summer/basketball',
-            'slug': 'summer-olympics-basketball',
+            'url': '/sports/olympics/winter/curling',
+            'slug': ''
         },
         {
             'title': strings(30005),
-            'url': '/sports/olympics/summer/basketball/3x3-basketball',
-            'slug': '3x3-basketball',
+            'url': '/sports/olympics/winter/figure-skating',
+            'slug': ''
         },
         {
             'title': strings(30006),
-            'url': '/sports/olympics/summer/volleyball/beach',
-            'slug': 'summer-olympics-beach-volleyball',
+            'url': '/sports/olympics/winter/freestyle-skiing',
+            'slug': ''
         },
         {
             'title': strings(30007),
-            'url': '/sports/olympics/summer/boxing',
-            'slug': 'summer-olympics-boxing',
+            'url': '/sports/olympics/winter/hockey',
+            'slug': ''
         },
         {
             'title': strings(30008),
-            'url': '/sports/olympics/summer/breaking',
-            'slug': 'olympics-summer-breaking',
+            'url': '/sports/olympics/winter/luge',
+            'slug': ''
         },
         {
             'title': strings(30009),
-            'url': '/sports/olympics/summer/canoe-kayak',
-            'slug': 'summer-olympics-canoe-kayak',
+            'url': '/sports/olympics/winter/nordic-combined',
+            'slug': ''
         },
         {
             'title': strings(30010),
-            'url': '/sports/olympics/summer/cycling',
-            'slug': 'summer-olympics-cycling',
+            'url': '/sports/olympics/winter/short-track-speed-skating',
+            'slug': ''
         },
         {
             'title': strings(30011),
-            'url': '/sports/olympics/summer/aquatics/diving',
-            'slug': 'summer-olympics-diving',
+            'url': '/sports/olympics/winter/skeleton',
+            'slug': ''
         },
         {
             'title': strings(30012),
-            'url': '/sports/olympics/summer/equestrian',
-            'slug': 'summer-olympics-equestrian',
+            'url': '/sports/olympics/winter/ski-jumping',
+            'slug': ''
         },
         {
             'title': strings(30013),
-            'url': '/sports/olympics/summer/fencing',
-            'slug': 'summer-olympics-fencing',
+            'url': '/sports/olympics/winter/ski-mountaineering',
+            'slug': ''
         },
         {
             'title': strings(30014),
-            'url': '/sports/olympics/summer/field-hockey',
-            'slug': 'summer-olympics-field-hockey',
+            'url': '/sports/olympics/winter/snowboard',
+            'slug': ''
         },
         {
             'title': strings(30015),
-            'url': '/sports/olympics/summer/golf',
-            'slug': 'summer-olympics-golf',
+            'url': '/sports/olympics/winter/speed-skating',
+            'slug': ''
         },
-        {
-            'title': strings(30016),
-            'url': '/sports/olympics/summer/gymnastics/artistic',
-            'slug': 'artistic',
-        },
-        {
-            'title': strings(30017),
-            'url': '/sports/olympics/summer/gymnastics/rhythmic',
-            'slug': 'rhythmic',
-        },
-        {
-            'title': strings(30018),
-            'url': '/sports/olympics/summer/gymnastics/trampoline',
-            'slug': 'trampoline',
-        },
-        {
-            'title': strings(30019),
-            'url': '/sports/olympics/summer/handball',
-            'slug': 'summer-olympics-handball',
-        },
-        {
-            'title': strings(30020),
-            'url': '/sports/olympics/summer/judo',
-            'slug': 'summer-olympics-judo',
-        },
-        {
-            'title': strings(30021),
-            'url': '/sports/olympics/summer/modern-pentathlon',
-            'slug': 'summer-olympics-modern-pentathlon',
-        },
-        {
-            'title': strings(30022),
-            'url': '/sports/olympics/summer/rowing',
-            'slug': 'summer-olympics-rowing',
-        },
-        {
-            'title': strings(30023),
-            'url': '/sports/olympics/summer/rugby',
-            'slug': 'summer-olympics-rugby',
-        },
-        {
-            'title': strings(30024),
-            'url': '/sports/olympics/summer/sailing',
-            'slug': 'summer-olympics-sailing',
-        },
-        {
-            'title': strings(30025),
-            'url': '/sports/olympics/summer/shooting',
-            'slug': 'summer-olympics-shooting',
-        },
-        {
-            'title': strings(30026),
-            'url': '/sports/olympics/summer/skateboarding',
-            'slug': 'summer-olympics-skateboarding',
-        },
-        {
-            'title': strings(30027),
-            'url': '/sports/olympics/summer/soccer',
-            'slug': 'summer-olympics-soccer',
-        },
-        {
-            'title': strings(30028),
-            'url': '/sports/olympics/summer/sport-climbing',
-            'slug': 'summer-olympics-sport-climbing',
-        },
-        {
-            'title': strings(30029),
-            'url': '/sports/olympics/summer/surfing',
-            'slug': 'summer-olympics-surfing',
-        },
-        {
-            'title': strings(30030),
-            'url': '/sports/olympics/summer/aquatics/swimming',
-            'slug': 'summer-olympics-swimming',
-        },
-        {
-            'title': strings(30031),
-            'url': '/sports/olympics/summer/table-tennis',
-            'slug': 'summer-olympics-table-tennis',
-        },
-        {
-            'title': strings(30032),
-            'url': '/sports/olympics/summer/taekwondo',
-            'slug': 'summer-olympics-taekwondo',
-        },
-        {
-            'title': strings(30033),
-            'url': '/sports/olympics/summer/tennis',
-            'slug': 'summer-olympics-tennis',
-        },
-        {
-            'title': strings(30034),
-            'url': '/sports/olympics/summer/triathlon',
-            'slug': 'summer-olympics-triathlon',
-        },
-        {
-            'title': strings(30035),
-            'url': '/sports/olympics/summer/volleyball',
-            'slug': 'summer-olympics-volleyball',
-        },
-        {
-            'title': strings(30036),
-            'url': '/sports/olympics/summer/aquatics/water-polo',
-            'slug': 'summer-olympics-water-polo',
-        },
-        {
-            'title': strings(30037),
-            'url': '/sports/olympics/summer/weightlifting',
-            'slug': 'summer-olympics-weightlifting',
-        },
-        {
-            'title': strings(30038),
-            'url': '/sports/olympics/summer/wrestling',
-            'slug': 'summer-olympics-wrestling',
-        },
-    ]
+   ]
 
 STATIC_ENTRIES = [
         {
@@ -288,7 +173,7 @@ STATIC_ENTRIES = [
             'title': strings(30201),
             'type': 'folder',
             'page': 'clips_by_slug',
-            'slug': 'summer-olympics-replays',
+            'slug': 'winter-olympics-replays',
         },
         {
             'title': strings(30202),
@@ -299,7 +184,7 @@ STATIC_ENTRIES = [
             'title': strings(30203),
             'type': 'folder',
             'page': 'clips_by_slug',
-            'slug': 'summer-olympics-highlights',
+            'slug': 'winter-olympics-highlights',
         },
         {
             'title': strings(30204),
@@ -317,7 +202,7 @@ STATIC_ENTRIES = [
             'title': strings(30205),
             'type': 'folder',
             'page': 'clips_by_slug',
-            'slug': 'summer-olympics-features-toyota',
+            'slug': 'winter-olympics-features-toyota',
         },
         {
             'title': strings(30214),
@@ -329,7 +214,7 @@ STATIC_ENTRIES = [
             'title': strings(30207),
             'type': 'folder',
             'page': 'clips_by_slug',
-            'slug': 'summer-olympics-features-bell',
+            'slug': 'winter-olympics-features-bell',
         },
         {
             'title': strings(30209),
@@ -383,13 +268,13 @@ STATIC_ENTRIES = [
             'title': strings(30208),
             'type': 'folder',
             'page': 'clips_by_slug',
-            'slug': 'summer-olympics-features-rbc',
+            'slug': 'winter-olympics-features-rbc',
         },
         {
             'title': strings(30217),
             'type': 'folder',
             'page': 'clips_by_slug',
-            'slug': 'summer-olympics-features-kraft',
+            'slug': 'winter-olympics-features-kraft',
         },
     ]
 
@@ -670,7 +555,7 @@ def list_live_videos(page_title, pageNo):
     variables = {
         "itemsQueryFilters": {
             "categorySlugs": [
-                "summer-olympics-live"
+                "winter-olympics-live"
             ],
             "mediaStreamType": "Live",
             "sort": "+publishedAt",
