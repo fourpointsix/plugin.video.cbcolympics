@@ -29,3 +29,6 @@ v2.3.1
 - Removed custom bitrate selection as it caused some streams to have no audio
 - Bitrate selection now the responsibility of Kodi
 - In-player program selection and audio track selection now work on streams that support them
+
+v2.4.0
+ - Updated for Milano Cortina 2026

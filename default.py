@@ -305,7 +305,7 @@ STATIC_ENTRIES = [
             'title': strings(30204),
             'type': 'folder',
             'page': 'clips_by_slug',
-            'slug': 'summer-olympics-team-canada',
+            'slug': 'sports-olympics-winter-team-canada',
         },
         {
             'title': strings(30210),
