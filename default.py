@@ -82,9 +82,9 @@ httpHeaders = {
 
 SPORTS = [
         {
-            'title': strings(30000),
+            'title': 'Alpine stuff',
             'url': '/sports/olympics/winter/alpine-skiing',
-            'slug': ''
+            'slug': 'olympics-winter-alpine-skiing-highlights'
         },
         {
             'title': strings(30001),
@@ -190,19 +190,13 @@ STATIC_ENTRIES = [
             'title': strings(30204),
             'type': 'folder',
             'page': 'clips_by_slug',
-            'slug': 'sports-olympics-winter-team-canada',
+            'slug': 'winter-olympics-team-canada',
         },
         {
             'title': strings(30210),
             'type': 'folder',
             'page': 'clips_by_slug',
             'slug': 'betrivers-the-game-betcha-didnt-know-olympics-feature',
-        },
-        {
-            'title': strings(30205),
-            'type': 'folder',
-            'page': 'clips_by_slug',
-            'slug': 'winter-olympics-features-toyota',
         },
         {
             'title': strings(30214),

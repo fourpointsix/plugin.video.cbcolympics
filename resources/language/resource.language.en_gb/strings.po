@@ -84,7 +84,7 @@ msgid "Replays"
 msgstr ""
 
 msgctxt "#30202"
-msgid "Sports"
+msgid "Per-Sport Highlights"
 msgstr ""
 
 msgctxt "#30203"
@@ -96,7 +96,7 @@ msgid "Team Canada"
 msgstr ""
 
 msgctxt "#30205"
-msgid "Feature: Breakthrough"
+msgid ""
 msgstr ""
 
 msgctxt "#30206"
